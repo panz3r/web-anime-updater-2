@@ -1,0 +1,11 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_password
+    volumes:
+      - ./db/mysql:/var/lib/mysql
