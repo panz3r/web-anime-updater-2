@@ -60,7 +60,7 @@ app.get(`${apiEndpoint}/notes`, (req, res) => {
 
 // Start Express server
 log.info(`Starting server on port ${serverPort}...`)
-const server = app.listen(serverPort, 'localhost', function (err) {
+const server = app.listen(serverPort, function (err) {
   const { address, port } = server.address()
   if (err) {
     log.error(`Unable to listen on port ${port}`, error)

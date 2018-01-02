@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import { conformsTo, get, isNil, size, trim } from 'lodash'
 
 import { ServerError } from '../common'
-import { createTokenForUser } from './jwtutils'
+import { createTokenForUser } from './jwtUtils'
 
 export class AuthManager {
   static async newUser(userObj) {
