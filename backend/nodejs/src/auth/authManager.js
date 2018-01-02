@@ -2,10 +2,15 @@ import bcrypt from 'bcrypt'
 import { conformsTo, get, isNil, size, trim } from 'lodash'
 
 import { ServerError } from '../common'
+import { UserRepository } from '../datasources'
 import { createTokenForUser } from './jwtUtils'
 
 export class AuthManager {
-  static async newUser(userObj) {
+  constructor(userRepository) {
+    this.userRepository = userRepository
+  }
+
+  async newUser(userObj) {
     const userData = this._checkUserObject(userObj)
 
     if (!userData) {
@@ -20,7 +25,7 @@ export class AuthManager {
     return true
   }
 
-  static async login(userObj) {
+  async login(userObj) {
     const userData = this._checkUserObject(userObj)
 
     if (!userData) {
@@ -34,7 +39,7 @@ export class AuthManager {
     return userToken
   }
 
-  static _checkUserObject(userObj) {
+  _checkUserObject(userObj) {
     const isValidUserObj = conformsTo(userObj, {
       username: username => !isNil(username) && size(trim(username)) > 0,
       password: password => !isNil(password) && size(trim(password)) > 0
