@@ -8,12 +8,13 @@ const log = Logger({
 export class UserRepository {
   constructor() {
     const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env
-    log.info(`Setup 'UserRepository' with database ${DB_NAME} at ${DB_HOST}`)
-    this.db = new Sequelize(DB_NAME, 'root', 'mysql_password', {
+    log.info(`Setup 'UserRepository' with database '${DB_NAME}' at '${DB_HOST}:${DB_PORT}'`)
+    this.db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
       dialect: 'mysql',
       host: DB_HOST,
       port: DB_PORT,
-      logging: false
+      logging: false,
+      operatorsAliases: false
     })
 
     // Setup models
@@ -27,7 +28,7 @@ export class UserRepository {
       log.info('Connection to DB has been established successfully.')
 
       // Define `User` model
-      const User = this.db.define('user', {
+      this.userModel = this.db.define('user', {
         id: {
           type: Sequelize.UUID,
           primaryKey: true
@@ -42,7 +43,7 @@ export class UserRepository {
       })
 
       // Create table
-      User.sync()
+      this.userModel.sync()
         .then(() => {
           log.info(`'Users' table created successfully`)
         })
