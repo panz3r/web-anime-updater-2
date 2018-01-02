@@ -7,6 +7,7 @@ import Logger from 'pretty-logger'
 
 import { AuthManager } from './auth'
 import { ExpressErrorManager } from './common'
+import { UserRepository } from './datasources'
 
 // Load .env
 dotenv.config()
@@ -16,7 +17,13 @@ const serverPort = 3000
 const apiEndpoint = '/api/v1'
 
 // Logger
-const log = new Logger()
+const log = new Logger({
+  prefix: 'Express App'
+})
+
+// Datasources
+const userRepository = new UserRepository()
+const authManager = new AuthManager(userRepository)
 
 // Configure Express (init, middlewares, etc.)
 const app = Express()
@@ -33,7 +40,7 @@ app.use(bodyParser.json()); // Support parsing of application/json type post dat
 
 // Define endpoints
 app.post(`${apiEndpoint}/register`, (req, res) => {
-  AuthManager.newUser(get(req, 'body', {}))
+  authManager.newUser(get(req, 'body', {}))
     .then(() => {
       res.sendStatus(201)
     })
@@ -44,7 +51,7 @@ app.post(`${apiEndpoint}/register`, (req, res) => {
 })
 
 app.post(`${apiEndpoint}/login`, (req, res) => {
-  AuthManager.login(get(req, 'body', {}))
+  authManager.login(get(req, 'body', {}))
     .then(token => {
       res.json({ token })
     })
