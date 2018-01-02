@@ -29,6 +29,8 @@
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^8.1.0",
     "lodash": "^4.17.4",
-    "pretty-logger": "^0.1.2"
+    "mysql2": "^1.5.1",
+    "pretty-logger": "^0.1.2",
+    "sequelize": "^4.28.6"
   }
 }
