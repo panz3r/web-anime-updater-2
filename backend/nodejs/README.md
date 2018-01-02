@@ -21,6 +21,12 @@ Create a `.env` file with the following content
 
 ```cfg
 JWT_SECRET=jwt_secret_you_want_to_use
+
+DB_HOST=your_mysql_db_host
+DB_PORT=your_mysql_db_port
+DB_NAME=your_mysql_db_name
+DB_USER=your_mysql_db_user
+DB_PASSWORD=your_mysql_db_password
 ```
 
 ### Run
