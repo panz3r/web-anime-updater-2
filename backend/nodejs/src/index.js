@@ -5,10 +5,10 @@ import jwt from 'express-jwt'
 import { get } from 'lodash'
 import Logger from 'pretty-logger'
 
-import { AuthManager } from './auth'
 import { ExpressErrorManager } from './common'
 import { MySqlDatabase } from './database'
 import { SeriesRepository, UserRepository } from './datasources'
+import { AuthManager, SeriesManager } from './managers'
 
 // Load .env
 dotenv.config()
@@ -32,6 +32,7 @@ const userRepository = new UserRepository(mysqlDatabase)
 // Managers
 const errorManager = new ExpressErrorManager(log)
 const authManager = new AuthManager(userRepository)
+const seriesManager = new SeriesManager(seriesRepository)
 
 // Configure Express (init, middlewares, etc.)
 const app = Express()
@@ -71,6 +72,16 @@ app.get(`${apiEndpoint}/me`, (req, res) => {
   authManager.getUserInfo(get(req, 'user.user'))
     .then(user => {
       res.json({ user })
+    })
+    .catch(err => {
+      errorManager.sendError(res, err)
+    })
+})
+
+app.get(`${apiEndpoint}/series`, (req, res) => {
+  seriesManager.getSeriesForUser(get(req, 'user.user'))
+    .then(series => {
+      res.json({ series })
     })
     .catch(err => {
       errorManager.sendError(res, err)
