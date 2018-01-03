@@ -9,6 +9,7 @@ dependencies:
   mysql2: 1.5.1
   pretty-logger: 0.1.2
   sequelize: 4.28.6
+  uuid: 3.1.0
 devDependencies:
   babel-cli: 6.26.0
   babel-preset-env: 1.6.1
@@ -3201,3 +3202,4 @@ specifiers:
   nodemon: ^1.14.7
   pretty-logger: ^0.1.2
   sequelize: ^4.28.6
+  uuid: ^3.1.0
