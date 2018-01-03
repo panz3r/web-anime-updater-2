@@ -4,6 +4,10 @@ export class ExpressErrorManager {
   static sendError(response, error) {
     if (error instanceof ServerError) {
       switch (error.code) {
+        case 401:
+          response.sendStatus(401) // HTTP status 401: Unauthorized
+          break
+
         case 422:
           response.sendStatus(422) // HTTP status 422: Unprocessable Entity
           break
