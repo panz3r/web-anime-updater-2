@@ -35,6 +35,8 @@ export class MySqlDatabase {
       this.seriesModel = Series(this.db)
 
       // Define relationships
+      //  - User x Series
+      this.userModel.belongsToMany(this.seriesModel, { through: 'users_series' })
       this.seriesModel.belongsToMany(this.userModel, { through: 'users_series' })
 
       // Sync models to DB
