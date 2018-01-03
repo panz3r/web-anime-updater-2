@@ -57,12 +57,24 @@ export class UserRepository {
     }
   }
 
+  async findUserById(id) {
+    const user = await this.userModel.findOne({
+      where: {
+        id
+      }
+    })
+
+    return user ? user.get({ plain: true }) : undefined
+  }
+
   async findUserByName(username) {
-    return await this.userModel.findOne({
+    const user = await this.userModel.findOne({
       where: {
         username
       }
     })
+
+    return user ? user.get({ plain: true }) : undefined
   }
 
   async createUser(newUser) {
