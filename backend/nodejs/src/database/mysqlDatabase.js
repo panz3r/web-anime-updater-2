@@ -38,7 +38,7 @@ export class MySqlDatabase {
       this.seriesModel.belongsToMany(this.userModel, { through: 'users_series' })
 
       // Sync models to DB
-      await this.db.sync({ force: true })
+      await this.db.sync()
       log.info(`DB synced successfully`)
     }
     catch (err) {
