@@ -1,0 +1,1 @@
+export { SeriesManager } from './seriesManager'

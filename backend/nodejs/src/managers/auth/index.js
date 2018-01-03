@@ -1,0 +1,1 @@
+export { AuthManager } from './authManager'
