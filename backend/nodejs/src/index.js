@@ -7,8 +7,8 @@ import Logger from 'pretty-logger'
 
 import { AuthManager } from './auth'
 import { ExpressErrorManager } from './common'
-import { UserRepository } from './datasources'
 import { MySqlDatabase } from './database'
+import { SeriesRepository, UserRepository } from './datasources'
 
 // Load .env
 dotenv.config()
@@ -26,6 +26,7 @@ const log = new Logger({
 const mysqlDatabase = new MySqlDatabase()
 
 // Datasources
+const seriesRepository = new SeriesRepository(mysqlDatabase)
 const userRepository = new UserRepository(mysqlDatabase)
 
 // Managers
