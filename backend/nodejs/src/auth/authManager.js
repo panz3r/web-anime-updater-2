@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { conformsTo, get, isNil, size, trim } from 'lodash'
+import { conformsTo, get, isNil, omit, size, trim } from 'lodash'
 import Logger from 'pretty-logger'
 
 import { ServerError } from '../common'
@@ -61,6 +61,20 @@ export class AuthManager {
     }
 
     return await createTokenForUser(existingUser.id)
+  }
+
+  async getUserInfo(userId) {
+    if (isNil(userId) && size(trim(userId)) === 0) {
+      throw new ServerError(422, `Invalid User ID`)
+    }
+
+    const existingUser = await this.userRepository.findUserById(userId)
+    if (!existingUser) {
+      // Not a 404 to avoid giving hints about registered users
+      throw new ServerError(401, `User not found`)
+    }
+
+    return omit(existingUser, ['id', 'password'])
   }
 
   _checkUserObject(userObj) {

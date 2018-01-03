@@ -61,8 +61,15 @@ app.post(`${apiEndpoint}/login`, (req, res) => {
     })
 })
 
-app.get(`${apiEndpoint}/notes`, (req, res) => {
-  res.json({ notes: "This is your notebook. Edit this to start saving your notes!" })
+app.get(`${apiEndpoint}/me`, (req, res) => {
+  authManager.getUserInfo(get(req, 'user.user'))
+    .then(user => {
+      res.json({ user })
+    })
+    .catch(err => {
+      log.error(`${err.code}: ${err.status}`)
+      ExpressErrorManager.sendError(res, err)
+    })
 })
 
 // Start Express server
