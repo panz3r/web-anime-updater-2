@@ -23,6 +23,9 @@ const log = new Logger({
 
 // Datasources
 const userRepository = new UserRepository()
+
+// Managers
+const errorManager = new ExpressErrorManager(log)
 const authManager = new AuthManager(userRepository)
 
 // Configure Express (init, middlewares, etc.)
@@ -45,8 +48,7 @@ app.post(`${apiEndpoint}/register`, (req, res) => {
       res.sendStatus(201)
     })
     .catch(err => {
-      log.error(`${err.code}: ${err.status}`)
-      ExpressErrorManager.sendError(res, err)
+      errorManager.sendError(res, err)
     })
 })
 
@@ -56,8 +58,7 @@ app.post(`${apiEndpoint}/login`, (req, res) => {
       res.json({ token })
     })
     .catch(err => {
-      log.error(`${err.code}: ${err.status}`)
-      ExpressErrorManager.sendError(res, err)
+      errorManager.sendError(res, err)
     })
 })
 
@@ -67,8 +68,7 @@ app.get(`${apiEndpoint}/me`, (req, res) => {
       res.json({ user })
     })
     .catch(err => {
-      log.error(`${err.code}: ${err.status}`)
-      ExpressErrorManager.sendError(res, err)
+      errorManager.sendError(res, err)
     })
 })
 
