@@ -13,7 +13,7 @@ import { UserRepository } from './datasources'
 dotenv.config()
 
 // Global constants
-const serverPort = 3000
+const serverPort = process.env.SERVICE_PORT || 3000
 const apiEndpoint = '/api/v1'
 
 // Logger
