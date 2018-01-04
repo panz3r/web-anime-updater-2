@@ -1,6 +1,6 @@
+import { map } from 'lodash'
 import Logger from 'pretty-logger'
 import Sequelize from 'sequelize'
-import generateUUID from 'uuid/v4'
 
 import { User, Series } from './models'
 
@@ -11,12 +11,17 @@ const log = Logger({
 export class MySqlDatabase {
   constructor() {
     const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env
-    log.info(`Setup 'MySQLDatabase' with database '${DB_NAME}@${DB_HOST}:${DB_PORT}'`)
+    log.info(
+      `Setup 'MySQLDatabase' with database '${DB_NAME}@${DB_HOST}:${DB_PORT}'`
+    )
+
     this.db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
       dialect: 'mysql',
       host: DB_HOST,
       port: DB_PORT,
-      logging: message => { log.debug(message) },
+      logging: message => {
+        log.debug(message)
+      },
       operatorsAliases: false
     })
 
@@ -36,23 +41,79 @@ export class MySqlDatabase {
 
       // Define relationships
       //  - User x Series
-      this.userModel.belongsToMany(this.seriesModel, { through: 'users_series' })
-      this.seriesModel.belongsToMany(this.userModel, { through: 'users_series' })
+      this.userModel.belongsToMany(this.seriesModel, {
+        through: 'users_series'
+      })
+      this.seriesModel.belongsToMany(this.userModel, {
+        through: 'users_series'
+      })
 
       // Sync models to DB
       await this.db.sync()
       log.info(`DB synced successfully`)
-    }
-    catch (err) {
+    } catch (err) {
       log.error('Error during setup:', err)
     }
   }
 
-  getUserModel() {
-    return this.userModel
+  async addUser(userObj) {
+    return await this.userModel.create(userObj)
   }
 
-  getSeriesModel() {
-    return this.seriesModel
+  async getUserById(id) {
+    const user = await this.userModel.findOne({
+      where: {
+        id
+      }
+    })
+
+    return user ? user.get({ plain: true }) : undefined
+  }
+
+  async getUserByName(username) {
+    const user = await this.userModel.findOne({
+      where: {
+        username
+      }
+    })
+
+    return user ? user.get({ plain: true }) : undefined
+  }
+
+  async getUserWithSeriesById(id) {
+    const user = await this.userModel.findOne({ where: { id } })
+    if (!user) {
+      return undefined
+    }
+
+    const series = await user.getSeries()
+
+    return {
+      ...user.get({ plain: true }),
+      series: map(series, ({ id, title, url, posterUrl }) => ({
+        id,
+        title,
+        url,
+        posterUrl
+      }))
+    }
+  }
+
+  async addSerieToUser(userId, serieObj) {
+    const user = await this.userModel.findOne({ where: { id: userId } })
+    if (!user) {
+      return undefined
+    }
+
+    const [newSerie, created] = await this.seriesModel.findOrCreate({
+      where: { url: serieObj.url },
+      defaults: { ...serieObj }
+    })
+
+    log.info(
+      created ? 'New serie created.' : 'Serie already exists.',
+      `Link to user '${userId}'`
+    )
+    return await user.addSerie(newSerie)
   }
 }
