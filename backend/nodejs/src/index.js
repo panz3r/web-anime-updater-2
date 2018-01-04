@@ -37,19 +37,19 @@ const seriesManager = new SeriesManager(seriesRepository)
 // Configure Express (init, middlewares, etc.)
 const app = Express()
 
-app.use(jwt({ secret: process.env.JWT_SECRET }) // Support JWT authentication
-  .unless({
-    path: [
-      `${apiEndpoint}/register`,
-      `${apiEndpoint}/login`
-    ]
-  }))
+app.use(
+  jwt({ secret: process.env.JWT_SECRET }) // Support JWT authentication
+    .unless({
+      path: [`${apiEndpoint}/register`, `${apiEndpoint}/login`]
+    })
+)
 
-app.use(bodyParser.json()); // Support parsing of application/json type post data
+app.use(bodyParser.json()) // Support parsing of application/json type post data
 
 // Define endpoints
 app.post(`${apiEndpoint}/register`, (req, res) => {
-  authManager.newUser(get(req, 'body', {}))
+  authManager
+    .newUser(get(req, 'body', {}))
     .then(() => {
       res.sendStatus(201)
     })
@@ -59,7 +59,8 @@ app.post(`${apiEndpoint}/register`, (req, res) => {
 })
 
 app.post(`${apiEndpoint}/login`, (req, res) => {
-  authManager.login(get(req, 'body', {}))
+  authManager
+    .login(get(req, 'body', {}))
     .then(token => {
       res.json({ token })
     })
@@ -69,7 +70,8 @@ app.post(`${apiEndpoint}/login`, (req, res) => {
 })
 
 app.get(`${apiEndpoint}/me`, (req, res) => {
-  authManager.getUserInfo(get(req, 'user.user'))
+  authManager
+    .getUserInfo(get(req, 'user.user'))
     .then(user => {
       res.json({ user })
     })
@@ -79,7 +81,8 @@ app.get(`${apiEndpoint}/me`, (req, res) => {
 })
 
 app.get(`${apiEndpoint}/series`, (req, res) => {
-  seriesManager.getSeriesForUser(get(req, 'user.user'))
+  seriesManager
+    .getSeriesForUser(get(req, 'user.user'))
     .then(series => {
       res.json({ series })
     })
@@ -88,9 +91,20 @@ app.get(`${apiEndpoint}/series`, (req, res) => {
     })
 })
 
+app.post(`${apiEndpoint}/series`, (req, res) => {
+  seriesManager
+    .newSerieForUser(get(req, 'user.user'), get(req, 'body'))
+    .then(() => {
+      res.sendStatus(201)
+    })
+    .catch(err => {
+      errorManager.sendError(res, err)
+    })
+})
+
 // Start Express server
 log.info(`Starting server on port ${serverPort}...`)
-const server = app.listen(serverPort, function (err) {
+const server = app.listen(serverPort, function(err) {
   const { address, port } = server.address()
   if (err) {
     log.error(`Unable to listen on port ${port}`, error)
@@ -98,4 +112,4 @@ const server = app.listen(serverPort, function (err) {
   }
 
   log.info(`Server listening at http://${address}:${port}`)
-});
+})
