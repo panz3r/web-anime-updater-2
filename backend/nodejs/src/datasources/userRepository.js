@@ -1,5 +1,4 @@
 import Logger from 'pretty-logger'
-import Sequelize from 'sequelize'
 import generateUUID from 'uuid/v4'
 
 const log = Logger({
@@ -12,27 +11,18 @@ export class UserRepository {
   }
 
   async findUserById(id) {
-    const user = await this.db.getUserModel().findOne({
-      where: {
-        id
-      }
-    })
-
-    return user ? user.get({ plain: true }) : undefined
+    log.debug(`findUserById('${id}')`)
+    return await this.db.getUserById(id)
   }
 
   async findUserByName(username) {
-    const user = await this.db.getUserModel().findOne({
-      where: {
-        username
-      }
-    })
-
-    return user ? user.get({ plain: true }) : undefined
+    log.debug(`findUserByName('${username}')`)
+    return await this.db.getUserByName(username)
   }
 
   async createUser(newUser) {
+    log.debug(`createUser({ ${newUser} })`)
     const { username, password } = newUser
-    return await this.db.getUserModel().create({ id: generateUUID(), username, password })
+    return await this.db.addUser({ id: generateUUID(), username, password })
   }
 }

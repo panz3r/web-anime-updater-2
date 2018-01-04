@@ -1,5 +1,4 @@
 import Logger from 'pretty-logger'
-import Sequelize from 'sequelize'
 import generateUUID from 'uuid/v4'
 
 const log = Logger({
@@ -12,12 +11,14 @@ export class SeriesRepository {
   }
 
   async getSeriesForUser(id) {
-    const user = await this.db.getUserModel().findOne({
-      where: {
-        id
-      }
-    })
+    log.debug(`getSeriesForUser('${id}')`)
+    const user = await this.db.getUserWithSeriesById(id)
+    log.debug(`Retrieved user:`, user)
+    return user.series || []
+  }
 
-    return await user.getSeries()
+  async addSeriesForUser(id, serie) {
+    log.debug(`addSeriesForUser('${id}', {`, serie, '})')
+    return await this.db.addSerieToUser(id, { id: generateUUID(), ...serie })
   }
 }
