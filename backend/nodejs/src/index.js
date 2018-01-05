@@ -6,8 +6,12 @@ import { get } from 'lodash'
 import Logger from 'pretty-logger'
 
 import { ExpressErrorManager } from './common'
-import { AuthManager, SeriesManager } from './managers'
-import { SeriesRepository, UserRepository } from './repositories'
+import { AuthManager, SeriesManager, EpisodesManager } from './managers'
+import {
+  SeriesRepository,
+  UserRepository,
+  EpisodesRepository
+} from './repositories'
 import { MySqlDatabase } from './services'
 
 // Load .env
@@ -22,17 +26,19 @@ const log = new Logger({
   prefix: 'Express App'
 })
 
-// Database
+// Services
 const mysqlDatabase = new MySqlDatabase()
 
-// Datasources
-const seriesRepository = new SeriesRepository(mysqlDatabase)
+// Repositories
 const userRepository = new UserRepository(mysqlDatabase)
+const seriesRepository = new SeriesRepository(mysqlDatabase)
+const episodesRepository = new EpisodesRepository(mysqlDatabase)
 
 // Managers
 const errorManager = new ExpressErrorManager(log)
 const authManager = new AuthManager(userRepository)
 const seriesManager = new SeriesManager(seriesRepository)
+const episodesManager = new EpisodesManager(episodesRepository)
 
 // Configure Express (init, middlewares, etc.)
 const app = Express()
@@ -96,6 +102,17 @@ app.post(`${apiEndpoint}/series`, (req, res) => {
     .newSerieForUser(get(req, 'user.user'), get(req, 'body'))
     .then(() => {
       res.sendStatus(201)
+    })
+    .catch(err => {
+      errorManager.sendError(res, err)
+    })
+})
+
+app.get(`${apiEndpoint}/series/:serieId/episodes`, (req, res) => {
+  episodesManager
+    .getEpisodesForSerie(get(req, 'params.serieId'))
+    .then(episodes => {
+      res.json({ episodes })
     })
     .catch(err => {
       errorManager.sendError(res, err)
