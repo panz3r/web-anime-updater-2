@@ -2,7 +2,7 @@ import { map } from 'lodash'
 import Logger from 'pretty-logger'
 import Sequelize from 'sequelize'
 
-import { User, Series } from './models'
+import { User, Series, Episode } from './models'
 
 const log = Logger({
   prefix: 'MySqlDatabase'
@@ -38,6 +38,7 @@ export class MySqlDatabase {
       // Define models
       this.userModel = User(this.db)
       this.seriesModel = Series(this.db)
+      this.episodeModel = Episode(this.db)
 
       // Define relationships
       //  - User x Series
@@ -47,6 +48,9 @@ export class MySqlDatabase {
       this.seriesModel.belongsToMany(this.userModel, {
         through: 'users_series'
       })
+      //  - Series x Episode
+      this.episodeModel.belongsTo(this.seriesModel)
+      this.seriesModel.hasMany(this.episodeModel)
 
       // Sync models to DB
       await this.db.sync()
@@ -116,4 +120,15 @@ export class MySqlDatabase {
     )
     return await user.addSerie(newSerie)
   }
+
+  async getEpisodesForSerie(serieId) {
+    const serie = await this.seriesModel.findOne({ where: { id: serieId } })
+    if (!serie) {
+      return undefined
+    }
+
+    return await serie.getEpisodes()
+  }
+
+  async addEpisodeToSerie(serieId, episodeObj) {}
 }
