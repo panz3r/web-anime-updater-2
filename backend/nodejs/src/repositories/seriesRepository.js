@@ -6,19 +6,22 @@ const log = Logger({
 })
 
 export class SeriesRepository {
-  constructor(database) {
-    this.db = database
+  constructor(service) {
+    this.service = service
   }
 
   async getSeriesForUser(id) {
     log.debug(`getSeriesForUser('${id}')`)
-    const user = await this.db.getUserWithSeriesById(id)
+    const user = await this.service.getUserWithSeriesById(id)
     log.debug(`Retrieved user:`, user)
     return user.series || []
   }
 
   async addSeriesForUser(id, serie) {
     log.debug(`addSeriesForUser('${id}', {`, serie, '})')
-    return await this.db.addSerieToUser(id, { id: generateUUID(), ...serie })
+    return await this.service.addSerieToUser(id, {
+      id: generateUUID(),
+      ...serie
+    })
   }
 }

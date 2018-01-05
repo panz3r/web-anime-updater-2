@@ -6,9 +6,9 @@ import { get } from 'lodash'
 import Logger from 'pretty-logger'
 
 import { ExpressErrorManager } from './common'
-import { MySqlDatabase } from './database'
-import { SeriesRepository, UserRepository } from './datasources'
 import { AuthManager, SeriesManager } from './managers'
+import { SeriesRepository, UserRepository } from './repositories'
+import { MySqlDatabase } from './services'
 
 // Load .env
 dotenv.config()
