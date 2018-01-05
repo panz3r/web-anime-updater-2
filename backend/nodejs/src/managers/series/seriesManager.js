@@ -8,7 +8,7 @@ export class SeriesManager {
   }
 
   async newSerieForUser(userId, serieObj) {
-    if (isNil(userId) && size(trim(userId)) === 0) {
+    if (isNil(userId) || size(trim(userId)) === 0) {
       throw new ServerError(422, `Invalid User ID`)
     }
 
@@ -21,7 +21,7 @@ export class SeriesManager {
   }
 
   async getSeriesForUser(userId) {
-    if (isNil(userId) && size(trim(userId)) === 0) {
+    if (isNil(userId) || size(trim(userId)) === 0) {
       throw new ServerError(422, `Invalid User ID`)
     }
 
