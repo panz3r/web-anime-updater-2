@@ -3,7 +3,6 @@ import { conformsTo, get, isNil, omit, size, trim } from 'lodash'
 import Logger from 'pretty-logger'
 
 import { ServerError } from '../../common'
-import { UserRepository } from '../../datasources'
 import { createTokenForUser } from './jwtUtils'
 
 const log = Logger({
