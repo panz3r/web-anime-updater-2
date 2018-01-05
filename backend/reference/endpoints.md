@@ -108,9 +108,9 @@ Must not return any data except for one of the status codes:
 * `422 Unprocessable Entity`, in case the serie could not be created or the user could not be subscirbed to it (invalid input data, unknown user, etc.)
 * `500 Internal Server Error`, in case of server errors
 
-##### GET /series/<serie-id>/episodes
+##### GET /series/:serieId:/episodes
 
-PRIVATE endpoint to retrieve every episodes of the `<serie-id>` serie
+PRIVATE endpoint to retrieve every episodes of the `:serieId:` serie
 
 Must return the status code `200 OK` and an object containing an array `"episodes"` containing objects representing the serie's episodes.
 
