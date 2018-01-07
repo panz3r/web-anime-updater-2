@@ -67,7 +67,7 @@ Must return the status code `200 OK` and an object containing every attributes o
 }
 ```
 
-#### GET /series
+#### GET /me/series
 
 PRIVATE endpoint to retrieve the series subscribed by the user.
 
@@ -88,7 +88,7 @@ Must return the status code `200 OK` and an object containing an array `"series"
 }
 ```
 
-#### POST /series
+#### POST /me/series
 
 PRIVATE endpoint to subscribe the current user to a new serie (or link him to an existing one).
 
@@ -108,7 +108,28 @@ Must not return any data except for one of the status codes:
 * `422 Unprocessable Entity`, in case the serie could not be created or the user could not be subscirbed to it (invalid input data, unknown user, etc.)
 * `500 Internal Server Error`, in case of server errors
 
-##### GET /series/:serieId:/episodes
+#### GET /series
+
+PRIVATE endpoint to retrieve all the series known to the service.
+
+Must return the status code `200 OK` and an object containing an array `"series"` containing objects representing the series.
+
+```json
+{
+  "series": [
+    {
+      "id": "serie-id",
+      "title": "TestSerie",
+      "url": "http://my.series.website/test-serie",
+      "posterUrl": "http://my.series.website/test-serie/poster.png"
+      ...
+    }
+    ...
+  ]
+}
+```
+
+#### GET /series/:serieId:/episodes
 
 PRIVATE endpoint to retrieve every episodes of the `:serieId:` serie
 
