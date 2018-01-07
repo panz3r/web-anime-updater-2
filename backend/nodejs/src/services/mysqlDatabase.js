@@ -84,7 +84,21 @@ export class MySqlDatabase {
     return user ? user.get({ plain: true }) : undefined
   }
 
-  async getUserWithSeriesById(id) {
+  async getSeries() {
+    const series = await this.seriesModel.findAll()
+
+    return map(series, s => {
+      const { id, title, url, posterUrl } = s.get({ plain: true })
+      return {
+        id,
+        title,
+        url,
+        posterUrl
+      }
+    })
+  }
+
+  async getSeriesForUser(id) {
     const user = await this.userModel.findOne({ where: { id } })
     if (!user) {
       return undefined
@@ -92,15 +106,12 @@ export class MySqlDatabase {
 
     const series = await user.getSeries()
 
-    return {
-      ...user.get({ plain: true }),
-      series: map(series, ({ id, title, url, posterUrl }) => ({
-        id,
-        title,
-        url,
-        posterUrl
-      }))
-    }
+    return map(series, ({ id, title, url, posterUrl }) => ({
+      id,
+      title,
+      url,
+      posterUrl
+    }))
   }
 
   async addSerieToUser(userId, serieObj) {

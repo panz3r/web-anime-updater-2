@@ -88,6 +88,17 @@ app.get(`${apiEndpoint}/me`, (req, res) => {
 
 app.get(`${apiEndpoint}/series`, (req, res) => {
   seriesManager
+    .getAllSeries()
+    .then(series => {
+      res.json({ series })
+    })
+    .catch(err => {
+      errorManager.sendError(res, err)
+    })
+})
+
+app.get(`${apiEndpoint}/me/series`, (req, res) => {
+  seriesManager
     .getSeriesForUser(get(req, 'user.user'))
     .then(series => {
       res.json({ series })
@@ -97,7 +108,7 @@ app.get(`${apiEndpoint}/series`, (req, res) => {
     })
 })
 
-app.post(`${apiEndpoint}/series`, (req, res) => {
+app.post(`${apiEndpoint}/me/series`, (req, res) => {
   seriesManager
     .newSerieForUser(get(req, 'user.user'), get(req, 'body'))
     .then(() => {

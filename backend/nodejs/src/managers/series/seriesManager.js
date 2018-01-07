@@ -20,6 +20,10 @@ export class SeriesManager {
     return this.seriesRepository.addSeriesForUser(userId, serieData)
   }
 
+  async getAllSeries() {
+    return this.seriesRepository.getAllSeries()
+  }
+
   async getSeriesForUser(userId) {
     if (isNil(userId) || size(trim(userId)) === 0) {
       throw new ServerError(422, `Invalid User ID`)
