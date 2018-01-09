@@ -32,4 +32,9 @@ export class SeriesRepository {
       ...serie
     })
   }
+
+  async updateSerie(id, serie) {
+    log.debug(`updateSerie('${id}', {`, serie, '})')
+    return await this.service.updateSerie(id, serie)
+  }
 }

@@ -32,6 +32,19 @@ export class SeriesManager {
     return this.seriesRepository.getSeriesForUser(userId)
   }
 
+  async updateSerie(serieId, serieObj) {
+    if (isNil(serieId) || size(trim(serieId)) === 0) {
+      throw new ServerError(422, `Invalid Serie ID`)
+    }
+
+    const serieData = this._checkSerieObject(serieObj)
+    if (!serieData) {
+      throw new ServerError(422, `Invalid Serie object`)
+    }
+
+    return this.seriesRepository.updateSerie(serieId, serieData)
+  }
+
   _checkSerieObject(serieObj) {
     const isValid = conformsTo(serieObj, {
       url: u => !isNil(u) && size(trim(u)) > 0

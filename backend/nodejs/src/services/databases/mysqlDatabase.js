@@ -132,6 +132,10 @@ export class MySqlDatabase {
     return await user.addSerie(newSerie)
   }
 
+  async updateSerie(serieId, serieDetails) {
+    return await this.seriesModel.update({ ...serieDetails }, { where: { id: serieId } })
+  }
+
   async getEpisodesForSerie(serieId) {
     const serie = await this.seriesModel.findOne({ where: { id: serieId } })
     if (!serie) {
