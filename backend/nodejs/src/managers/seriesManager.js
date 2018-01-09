@@ -1,6 +1,6 @@
 import { conformsTo, isNil, size, trim } from 'lodash'
 
-import { ServerError } from '../../common/serverError'
+import { ServerError } from '../common/serverError'
 
 export class SeriesManager {
   constructor(seriesRepository) {
@@ -40,8 +40,9 @@ export class SeriesManager {
       return undefined
     }
 
-    const { title, url, posterUrl } = serieObj
+    const { id, title, url, posterUrl } = serieObj
     return {
+      id,
       title,
       url,
       posterUrl
