@@ -1,0 +1,1 @@
+export { Anime1Scraper } from './anime1Scraper'
