@@ -1,1 +1,1 @@
-export { MySqlDatabase } from './mysqlDatabase'
+export { MySqlDatabase } from './databases'
