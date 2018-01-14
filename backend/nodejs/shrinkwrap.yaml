@@ -1,4 +1,5 @@
 dependencies:
+  babel-polyfill: 6.26.0
   bcrypt: 1.0.3
   body-parser: 1.18.2
   cheerio: 1.0.0-rc.2
@@ -623,7 +624,6 @@ packages:
       babel-runtime: 6.26.0
       core-js: 2.5.3
       regenerator-runtime: 0.10.5
-    dev: true
     resolution:
       integrity: sha1-N5k3q8Z9eJWXCtxiHyhM2WbPIVM=
   /babel-preset-env/1.6.1:
@@ -696,7 +696,6 @@ packages:
     dependencies:
       core-js: 2.5.3
       regenerator-runtime: 0.11.1
-    dev: true
     resolution:
       integrity: sha1-llxwWGaOgrVde/4E/yM3vItWR/4=
   /babel-template/6.26.0:
@@ -1053,7 +1052,6 @@ packages:
     resolution:
       integrity: sha1-5+Ch+e9DtMi6klxcWpboBtFoc7s=
   /core-js/2.5.3:
-    dev: true
     resolution:
       integrity: sha1-isw4NFgk8W2DZbfJtCWRaOjtYD4=
   /core-util-is/1.0.2:
@@ -2647,11 +2645,9 @@ packages:
     resolution:
       integrity: sha512-jVpo1GadrDAK59t/0jRx5VxYWQEDkkEKi6+HjE3joFVLfDOh9Xrdh0dF1eSq+BI/SwvTQ44gSscJ8N5zYL61sg==
   /regenerator-runtime/0.10.5:
-    dev: true
     resolution:
       integrity: sha1-M2w+/BIgrc7dosn6tntaeVWjNlg=
   /regenerator-runtime/0.11.1:
-    dev: true
     resolution:
       integrity: sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
   /regenerator-transform/0.10.1:
@@ -3298,6 +3294,7 @@ shrinkwrapMinorVersion: 4
 shrinkwrapVersion: 3
 specifiers:
   babel-cli: ^6.26.0
+  babel-polyfill: ^6.26.0
   babel-preset-env: ^1.6.1
   babel-preset-stage-2: ^6.24.1
   bcrypt: ^1.0.3

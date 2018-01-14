@@ -1,3 +1,5 @@
+import 'babel-polyfill'
+
 import bodyParser from 'body-parser'
 import dotenv from 'dotenv'
 import Express from 'express'
