@@ -54,8 +54,12 @@ export class Anime1Scraper {
         log.info(`Updated '${serieTitle || series.title}' serie details`)
 
         // Update episodes details on DB
-        each(updatesData.episodes, e => {
-          console.log({ e })
+        each(updatesData.episodes, async e => {
+          try {
+            await this.em.addEpisodeToSerie(serie.id, e)
+          } catch (err) {
+            log.error(`Could not add episode to serie`, err)
+          }
         })
       }
     })
