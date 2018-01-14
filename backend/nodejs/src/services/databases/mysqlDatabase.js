@@ -11,9 +11,7 @@ const log = Logger({
 export class MySqlDatabase {
   constructor() {
     const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env
-    log.info(
-      `Setup 'MySQLDatabase' with database '${DB_NAME}@${DB_HOST}:${DB_PORT}'`
-    )
+    log.info(`Setup 'MySQLDatabase' with database '${DB_NAME}@${DB_HOST}:${DB_PORT}'`)
 
     this.db = new Sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
       dialect: 'mysql',
@@ -145,5 +143,21 @@ export class MySqlDatabase {
     return await serie.getEpisodes()
   }
 
-  async addEpisodeToSerie(serieId, episodeObj) {}
+  async addEpisodeToSerie(serieId, episodeObj) {
+    const serie = await this.seriesModel.findOne({ where: { id: serieId } })
+    if (!serie) {
+      return undefined
+    }
+
+    const [newEpisode, created] = await this.episodeModel.findOrCreate({
+      where: { url: episodeObj.url },
+      defaults: { ...episodeObj }
+    })
+
+    log.info(
+      created ? 'New episode created.' : 'Episode already exists.',
+      `Link to serie '${serieId}'`
+    )
+    return await serie.addEpisode(newEpisode)
+  }
 }

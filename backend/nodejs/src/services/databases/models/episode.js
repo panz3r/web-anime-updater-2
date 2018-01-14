@@ -13,6 +13,7 @@ export const Episode = sequelize =>
       type: Sequelize.STRING
     },
     url: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      unique: 'episodeUrl'
     }
   })
