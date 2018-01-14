@@ -1,3 +1,4 @@
+import { sortBy } from 'lodash'
 import Logger from 'pretty-logger'
 import generateUUID from 'uuid/v4'
 
@@ -14,7 +15,8 @@ export class EpisodesRepository {
     log.debug(`getEpisodesForSerie('${id}')`)
     const episodes = await this.service.getEpisodesForSerie(id)
 
-    return episodes || []
+    return episodes ? sortBy(episodes, 'number') : []
+  }
 
   async addEpisodeToSerie(serieId, episode) {
     log.debug(`upsertEpisodeForSerie('${serieId}', {`, episode, `})`)
