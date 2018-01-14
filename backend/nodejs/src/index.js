@@ -6,12 +6,9 @@ import { get } from 'lodash'
 import Logger from 'pretty-logger'
 
 import { ExpressErrorManager } from './common'
+import { Anime1Scraper } from './externals'
 import { AuthManager, SeriesManager, EpisodesManager } from './managers'
-import {
-  SeriesRepository,
-  UserRepository,
-  EpisodesRepository
-} from './repositories'
+import { SeriesRepository, UserRepository, EpisodesRepository } from './repositories'
 import { MySqlDatabase } from './services'
 
 // Load .env
@@ -39,6 +36,9 @@ const errorManager = new ExpressErrorManager(log)
 const authManager = new AuthManager(userRepository)
 const seriesManager = new SeriesManager(seriesRepository)
 const episodesManager = new EpisodesManager(episodesRepository)
+
+// Scrapers
+const scrapers = [new Anime1Scraper(seriesManager, episodesManager)]
 
 // Configure Express (init, middlewares, etc.)
 const app = Express()
@@ -141,3 +141,6 @@ const server = app.listen(serverPort, function(err) {
 
   log.info(`Server listening at http://${address}:${port}`)
 })
+
+// Start Scrapers
+scrapers.forEach(s => s.start())
