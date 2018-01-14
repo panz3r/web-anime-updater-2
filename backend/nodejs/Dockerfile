@@ -9,8 +9,11 @@ COPY . .
 # Install dependencies
 RUN npm install
 
+# Compile
+RUN npm run build
+
 # Expose port -- receive as ENV variable later
 EXPOSE 3000
 
-# Start nodemon
-CMD ["npm", "start"]
+# Start app
+CMD ["npm", "run serve"]

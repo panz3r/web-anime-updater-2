@@ -1,11 +1,13 @@
 # Web Anime Updater 2
 
 ## NodeJS Backend
+
 This is a NodeJS Backend implementation for Web Anime Updater 2 (WAU2) using ExpressJS
 
 ### Setup
 
 #### Dependencies
+
 Install the required dependencies by running
 
 ```bash
@@ -17,6 +19,7 @@ yarn
 ```
 
 #### Configuration
+
 Create a `.env` file with the following content
 
 ```cfg
@@ -32,6 +35,7 @@ SCRAPERS_INTERVAL=15
 ```
 
 ### Run
+
 Run the backend via the following command
 
 ```bash
@@ -43,4 +47,12 @@ yarn start
 ```
 
 ### Docker
-> Docker support coming soon...
+
+To start this BackEnd implementation simply run
+
+```bash
+docker-compose up
+```
+
+inside the `backend` folder, this will start the DB required by the BE in order to work
+and an instance of the `NodeJS BackEnd`

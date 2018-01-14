@@ -19,5 +19,12 @@ services:
       dockerfile: ./Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./nodejs/src:/app/src
+    command: npm run serve
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: wau2
+      DB_USER: root
+      DB_PASSWORD: mysql_password
