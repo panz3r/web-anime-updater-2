@@ -8,6 +8,10 @@ const log = Logger({
   prefix: 'MySqlDatabase'
 })
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 export class MySqlDatabase {
   constructor() {
     const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env
@@ -28,11 +32,24 @@ export class MySqlDatabase {
   }
 
   async _setup() {
-    // Check connection
-    try {
-      await this.db.authenticate()
-      log.info('Connection to DB has been established successfully.')
+    let connected = false
+    while (!connected) {
+      // Check connection
+      try {
+        await this.db.authenticate()
+        log.info('Connection to DB has been established successfully.')
+        connected = true
+      } catch (err) {
+        log.error('Error during connection:', err)
+      }
 
+      // Wait before trying to connect again
+      if (!connected) {
+        await sleep(2000)
+      }
+    }
+
+    try {
       // Define models
       this.userModel = User(this.db)
       this.seriesModel = Series(this.db)
