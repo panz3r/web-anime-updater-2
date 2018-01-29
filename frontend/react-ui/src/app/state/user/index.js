@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import get from 'lodash/get'
 
 // CONSTANTS
 const USER_LOGIN_SUCCESSFULL = 'state/user/login_successfull'
@@ -33,3 +34,6 @@ const token = (state = null, { type, payload }) => {
 export default combineReducers({
   token
 })
+
+// SELECTORS
+export const getUserToken = state => get(state, 'user.token', null)

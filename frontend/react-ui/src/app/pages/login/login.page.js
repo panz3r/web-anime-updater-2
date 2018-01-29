@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { withStyles } from 'material-ui/styles'
 import Grid from 'material-ui/Grid'
 import Paper from 'material-ui/Paper'
@@ -30,7 +31,8 @@ const styles = theme => ({
 
 class LoginPage extends Component {
   state = {
-    loading: false
+    loading: false,
+    redirectToReferrer: false
   }
 
   constructor(props) {
@@ -52,7 +54,8 @@ class LoginPage extends Component {
       .then(tkn => {
         UserLoginSuccessfull(tkn)
         this.setState({
-          loading: false
+          loading: false,
+          redirectToReferrer: true
         })
       })
       .catch(err => {
@@ -71,7 +74,14 @@ class LoginPage extends Component {
 
   render() {
     const { classes } = this.props
-    const { error, loading } = this.state
+    const { from } = this.props.location.state || { from: { pathname: '/' } }
+    const { error, loading, redirectToReferrer } = this.state
+
+    console.log({ props: this.props })
+
+    if (redirectToReferrer) {
+      return <Redirect to={from} />
+    }
 
     return (
       <Unsplashed className={classes.root}>
