@@ -5,11 +5,13 @@ import classNames from 'classnames'
 import Drawer from 'material-ui/Drawer'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
-import List from 'material-ui/List'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import Typography from 'material-ui/Typography'
 import Divider from 'material-ui/Divider'
 import IconButton from 'material-ui/IconButton'
 import MenuIcon from 'material-ui-icons/Menu'
+import SubscriptionsIcon from 'material-ui-icons/Subscriptions'
+import AccountCircleIcon from 'material-ui-icons/AccountCircle'
 
 import { SeriesPage } from './subpages'
 
@@ -121,9 +123,23 @@ class MainPage extends Component {
             <div className={classes.drawerInner}>
               <div className={classes.drawerHeader} />
               <Divider />
-              <List className={classes.list}>Test</List>
+              <List className={classes.list}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <SubscriptionsIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Series" />
+                </ListItem>
+              </List>
               <Divider />
-              <List className={classes.list}>Test 2</List>
+              <List className={classes.list}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <AccountCircleIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Account" />
+                </ListItem>
+              </List>
             </div>
           </Drawer>
           <main className={classes.content}>
