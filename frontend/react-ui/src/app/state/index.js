@@ -3,9 +3,11 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
 import user from './user'
+import series from './series'
 
 const reducers = combineReducers({
-  user
+  user,
+  series
 })
 
 const composeEnhancers =

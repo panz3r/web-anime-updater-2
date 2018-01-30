@@ -8,7 +8,7 @@ import Snackbar from 'material-ui/Snackbar'
 import { Unsplashed } from 'react-unsplash-container'
 
 import { AuthService } from '../../services'
-import { UserLoginSuccessfull } from '../../state/user'
+import { userLoginSuccessfull } from '../../state/user'
 import { LoginFormComponent } from './components'
 
 const styles = theme => ({
@@ -42,8 +42,8 @@ class LoginPage extends Component {
   }
 
   _login = credentials => {
-    const { UserLoginSuccessfull } = this.props
-    console.log({ credentials })
+    const { userLoginSuccessfull } = this.props
+
     this.setState({
       error: false,
       loading: true
@@ -52,7 +52,7 @@ class LoginPage extends Component {
     this.authService
       .login(credentials)
       .then(tkn => {
-        UserLoginSuccessfull(tkn)
+        userLoginSuccessfull(tkn)
         this.setState({
           loading: false,
           redirectToReferrer: true
@@ -122,7 +122,7 @@ class LoginPage extends Component {
 }
 
 const mapDispatchToProps = {
-  UserLoginSuccessfull
+  userLoginSuccessfull
 }
 
 export default connect(undefined, mapDispatchToProps)(

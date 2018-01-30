@@ -2,7 +2,7 @@ export class AuthService {
   login() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject()
+        resolve('a.fake.token')
       }, 2000)
     })
   }
